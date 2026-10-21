@@ -106,6 +106,8 @@ The RPC listens on `127.0.0.1` only. Mining and inbound P2P stay off.
 
 ## How to contribute
 
+Pick a task from the [ROADMAP](ROADMAP.md) or from the issues labeled [`good first issue`](https://github.com/enioxt/hacash-base/issues?q=is%3Aopen+label%3A%22good+first+issue%22). Comment "I'll take it" on the issue, then open a small PR.
+
 1. Measure before you write. Each claim needs a source (`file:line`, command or URL) and a date.
 2. If you could not measure it, mark it `⚪` and say where to look.
 3. Change both languages: `HACASH.md` and `HACASH.pt-BR.md` keep the same numbers and paths.
