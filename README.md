@@ -115,5 +115,5 @@ Changes to Hacash itself go to the Hacash repositories and follow HIP-12 (sectio
 
 ## License
 
-Our text, route catalog, scripts, short deck and MCP server code (`mcp/`): MIT ([LICENSE](LICENSE)). The test fixtures in `mcp/test/fixtures/` are recorded responses of a node to public read-only queries (factual output).
+Our text, route catalog, scripts, short deck and MCP server code (`mcp/`): MIT ([LICENSE](LICENSE); scope in [NOTICE.md](NOTICE.md)). The test fixtures in `mcp/test/fixtures/` are recorded responses of a node to public read-only queries (factual output).
 Hacash code belongs to its authors. 19 of the 33 `hacash` repositories had no license file on 2026-10-21 (section 3). This repository copies no code from them.

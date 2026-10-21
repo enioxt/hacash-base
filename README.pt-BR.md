@@ -115,5 +115,5 @@ Mudanças na própria Hacash vão para os repositórios da Hacash e seguem a HIP
 
 ## Licença
 
-Nosso texto, catálogo de rotas, scripts, deck curto e código do servidor MCP (`mcp/`): MIT ([LICENSE](LICENSE)). As fixtures de teste em `mcp/test/fixtures/` são respostas gravadas de um nó a consultas públicas de leitura (saída factual).
+Nosso texto, catálogo de rotas, scripts, deck curto e código do servidor MCP (`mcp/`): MIT ([LICENSE](LICENSE); escopo em [NOTICE.md](NOTICE.md)). As fixtures de teste em `mcp/test/fixtures/` são respostas gravadas de um nó a consultas públicas de leitura (saída factual).
 O código da Hacash pertence aos seus autores. 19 dos 33 repositórios `hacash` não tinham arquivo de licença em 21/10/2026 (seção 3). Este repositório não copia código deles.
