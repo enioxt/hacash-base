@@ -73,6 +73,7 @@ It does not sign, broadcast or create accounts. It only calls 8 `GET` routes, on
 |---|---|
 | [HACASH.md](HACASH.md) · [HACASH.pt-BR.md](HACASH.pt-BR.md) | the whole knowledge base, 11 sections, English and Portuguese |
 | [api/rotas.json](api/rotas.json) | the 55 node routes: method, parameters, Rust handler (`file:line`), risk, real example |
+| Route map in 4 languages: [English](api/ROTAS.md) · [Português](api/ROTAS.pt-BR.md) · [简体中文](api/ROTAS.zh.md) · [Türkçe](api/ROTAS.tr.md) | the same 55 routes as readable tables, generated from the JSON by `scripts/gerar-mapa-rotas.ts` (`--check` fails if out of date) |
 | [scripts/rodar-no.sh](scripts/rodar-no.sh) | alternative to step 2: builds from source and runs a read-only node; running it again reuses what exists and refuses a config that mines or opens the RPC |
 | [mcp/](mcp/) | read-only MCP server (8 tools), with tests and its own README |
 | [apresentacao/](apresentacao/) | short deck in English and Portuguese |

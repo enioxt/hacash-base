@@ -73,6 +73,7 @@ Ele não assina, não transmite e não cria conta. Só chama 8 rotas `GET`, na U
 |---|---|
 | [HACASH.pt-BR.md](HACASH.pt-BR.md) · [HACASH.md](HACASH.md) | a base inteira, 11 seções, em português e inglês |
 | [api/rotas.json](api/rotas.json) | as 55 rotas do nó: método, parâmetros, handler Rust (`arquivo:linha`), risco, exemplo real |
+| Mapa de rotas em 4 línguas: [English](api/ROTAS.md) · [Português](api/ROTAS.pt-BR.md) · [简体中文](api/ROTAS.zh.md) · [Türkçe](api/ROTAS.tr.md) | as mesmas 55 rotas em tabelas legíveis, geradas do JSON por `scripts/gerar-mapa-rotas.ts` (`--check` falha se estiver desatualizado) |
 | [scripts/rodar-no.sh](scripts/rodar-no.sh) | alternativa ao passo 2: compila do código e roda um nó só de leitura; rodar de novo reaproveita o que existe e recusa config que minera ou abre a RPC |
 | [mcp/](mcp/) | servidor MCP só de leitura (8 ferramentas), com testes e README próprio |
 | [apresentacao/](apresentacao/) | deck curto em inglês e português |
