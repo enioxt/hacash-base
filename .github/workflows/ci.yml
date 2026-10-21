@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install MCP dependencies
+        working-directory: mcp
+        run: bun install --frozen-lockfile
+
+      - name: Run MCP tests
+        working-directory: mcp
+        run: bun test test/
+
+      - name: Typecheck MCP server
+        working-directory: mcp
+        run: bun run typecheck
+
+      - name: Check generated route maps
+        run: bun scripts/gerar-mapa-rotas.ts --check
+
+      - name: Run no-node smoke test
+        run: bash scripts/rodar-no.test.sh
