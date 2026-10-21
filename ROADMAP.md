@@ -17,7 +17,7 @@ The rules in [How to contribute](README.md#how-to-contribute) apply to every tas
 
 - Review the Portuguese route map as a native speaker. [#3](https://github.com/enioxt/hacash-base/issues/3) · `translation` `good first issue` · S
 - Review the English route map as a native speaker. [#4](https://github.com/enioxt/hacash-base/issues/4) · `translation` `docs` `good first issue` · S
-- Write fix suggestions for the 6 errors in the official material. [#7](https://github.com/enioxt/hacash-base/issues/7) · `docs` `good first issue` · S
+- Write fix suggestions for the 7 errors in the official material. [#7](https://github.com/enioxt/hacash-base/issues/7) · `docs` `good first issue` · S
 - Add a read-only MCP tool for the average fee. [#8](https://github.com/enioxt/hacash-base/issues/8) · `mcp` `good first issue` · S
 - Test the fullnode README's second `boot_nodes` address on its own. [#13](https://github.com/enioxt/hacash-base/issues/13) · `node` `good first issue` · S
 - Run the MCP tests and the route-map check in CI. [#14](https://github.com/enioxt/hacash-base/issues/14) · `tests` `good first issue` · S

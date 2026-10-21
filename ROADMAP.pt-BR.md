@@ -17,7 +17,7 @@ As regras de [Como contribuir](README.pt-BR.md#como-contribuir) valem para toda 
 
 - Revisar o mapa de rotas em português, como falante nativo. [#3](https://github.com/enioxt/hacash-base/issues/3) · `translation` `good first issue` · P
 - Revisar o mapa de rotas em inglês, como falante nativo. [#4](https://github.com/enioxt/hacash-base/issues/4) · `translation` `docs` `good first issue` · P
-- Escrever sugestões de correção para os 6 erros do material oficial. [#7](https://github.com/enioxt/hacash-base/issues/7) · `docs` `good first issue` · P
+- Escrever sugestões de correção para os 7 erros do material oficial. [#7](https://github.com/enioxt/hacash-base/issues/7) · `docs` `good first issue` · P
 - Criar uma ferramenta MCP só leitura para a taxa média. [#8](https://github.com/enioxt/hacash-base/issues/8) · `mcp` `good first issue` · P
 - Testar sozinho o 2º endereço de `boot_nodes` do README do fullnode. [#13](https://github.com/enioxt/hacash-base/issues/13) · `node` `good first issue` · P
 - Rodar os testes do MCP e a checagem do mapa de rotas na CI. [#14](https://github.com/enioxt/hacash-base/issues/14) · `tests` `good first issue` · P
