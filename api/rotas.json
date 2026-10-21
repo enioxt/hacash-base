@@ -1,0 +1,1785 @@
+{
+  "sobre": "Catálogo dos 55 caminhos HTTP do hacash/fullnode 1.2.5 (commit ce25368a). Leitura estática do código + chamadas a um nó local em 127.0.0.1:8082.",
+  "fonte_codigo": "https://github.com/hacash/fullnode/tree/ce25368a038c5307ab71b5d81cd781cc54fe884d",
+  "medido_em": "2026-10-21T10:39:42-03:00",
+  "legenda_risco": {
+    "R0": "leitura",
+    "R1": "leitura com espera longa",
+    "R2": "envolve chave privada",
+    "R3": "muda estado ou transmite",
+    "R4": "mineração",
+    "R5": "depuração"
+  },
+  "notas": [
+    "55 caminhos = 54 registros ApiRoute:: + /_server_ (server/src/http.rs:163). Com debug_routes = false (padrão) ficam 52 montados.",
+    "A API devolve HTTP 200 mesmo em erro; o erro vem no corpo como {\"ret\":1,\"err\":\"...\"}.",
+    "parametros_query vem de leitura estática do corpo do handler e das funções que ele chama com req (até 2 níveis). ⚪ Pode faltar parâmetro lido por outro caminho; onde buscar: o arquivo:linha do handler.",
+    "Rotas com executar=false não foram chamadas: geram ou recebem chave privada, assinam, mudam estado ou transmitem.",
+    "Endereços IP de pares P2P foram omitidos das respostas de exemplo."
+  ],
+  "total": 55,
+  "rotas": [
+    {
+      "metodo": "GET",
+      "caminho": "/",
+      "registro": "mint/src/api/mod.rs:55",
+      "handler": "mint/src/api/console.rs:12",
+      "handler_nome": "console_handler",
+      "parametros_query": [],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /",
+        "http": 200,
+        "bytes": 458,
+        "ms": 34,
+        "content_type": "text/html; charset=utf-8",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "ips_omitidos": true,
+        "resposta": "<html><head><title>Hacash node console</title></head><body>\n        <h3>Hacash console</h3>\n        <p>Latest height 792745 time 2026-10-21 10:29:01</p>\n        <p>Block span times: day: 291s, week: 297s, month: 299s, quarter: 300s, year: 330s, all: 306s</p>\n        <p>P2P peers: bjsled<<ip-omitido>>, hn96d73f47<<ip-omitido>></p>\n        <p>[TxPool] tx count: 0(1), 1(0)</p>\n        <p>Miner worker …(truncado)"
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/_server_",
+      "registro": "server/src/http.rs:163",
+      "handler": "server/src/http.rs:163",
+      "handler_nome": "(closure)",
+      "parametros_query": [],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /_server_",
+        "http": 200,
+        "bytes": 17,
+        "ms": 0,
+        "content_type": "text/plain; charset=utf-8",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "fefc880440141ca4b03a4a99b8f6a7b10ee1ec55d20a685c777b86dc0abcfc81",
+        "resposta": "Hacash Api Server"
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/block_by_height",
+      "registro": "api/src/chain.rs:38",
+      "handler": "api/src/chain.rs:7",
+      "handler_nome": "block_by_height_handler",
+      "parametros_query": [
+        "height"
+      ],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /block_by_height?height=1000",
+        "http": 200,
+        "bytes": 44,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "e4db7b6fabc4d4571dfc7876b96f704caf396a9645caf50e2f01e8346f34927c",
+        "resposta": {
+          "height": 1000,
+          "hash": "0017696a",
+          "size": 131
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/create/account",
+      "registro": "api/src/account.rs:39",
+      "handler": "api/src/account.rs:7",
+      "handler_nome": "account_create_handler",
+      "parametros_query": [
+        "quantity"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R2",
+      "executar": false,
+      "motivo": "NÃO EXECUTAR: gera par de chaves e devolve a chave privada no corpo",
+      "exemplo": null
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/create/coin/transfer",
+      "registro": "mint/src/api/mod.rs:124",
+      "handler": "mint/src/api/transfer.rs:233",
+      "handler_nome": "create_coin_transfer_handler",
+      "parametros_query": [
+        "fee",
+        "main_prikey",
+        "from_prikey",
+        "to_address",
+        "hacash",
+        "diamonds",
+        "satoshi",
+        "timestamp"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R2",
+      "executar": false,
+      "motivo": "NÃO EXECUTAR: recebe main_prikey na query string e devolve transação assinada",
+      "exemplo": null
+    },
+    {
+      "metodo": "POST",
+      "caminho": "/create/transaction",
+      "registro": "mint/src/api/mod.rs:116",
+      "handler": "mint/src/api/transaction.rs:99",
+      "handler_nome": "transaction_build_handler",
+      "parametros_query": [
+        "unit",
+        "action",
+        "signature",
+        "description",
+        "hexbody"
+      ],
+      "corpo": "transação ou bloco em hex no corpo do POST",
+      "na_doc_v2": true,
+      "risco": "R2",
+      "executar": false,
+      "motivo": "NÃO EXECUTAR: monta transação; aceita chave privada na query",
+      "exemplo": null
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/debug/contract/storage",
+      "registro": "vm/src/api.rs:593",
+      "handler": "vm/src/api.rs:442",
+      "handler_nome": "debug_contract_storage",
+      "parametros_query": [
+        "contract",
+        "key",
+        "kind"
+      ],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R5",
+      "montada_por_padrao": false,
+      "nota": "só existe com debug_routes = true",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /debug/contract/storage",
+        "http": 404,
+        "bytes": 0,
+        "ms": 0,
+        "content_type": "",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "resposta": ""
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/debug/p2sh/scriptmh",
+      "registro": "vm/src/api.rs:594",
+      "handler": "vm/src/api.rs:526",
+      "handler_nome": "debug_p2sh_scriptmh",
+      "parametros_query": [
+        "lockbox",
+        "codeconf",
+        "libs"
+      ],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R5",
+      "montada_por_padrao": false,
+      "nota": "só existe com debug_routes = true",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /debug/p2sh/scriptmh",
+        "http": 404,
+        "bytes": 0,
+        "ms": 0,
+        "content_type": "",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "resposta": ""
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/debug/pool_print",
+      "registro": "api/src/pool.rs:32",
+      "handler": "api/src/pool.rs:20",
+      "handler_nome": "pool_print_handler",
+      "parametros_query": [],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R5",
+      "montada_por_padrao": false,
+      "nota": "só existe com debug_routes = true",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /debug/pool_print",
+        "http": 404,
+        "bytes": 0,
+        "ms": 0,
+        "content_type": "",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "resposta": ""
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/miner/pending_replay",
+      "registro": "mint/src/api/mod.rs:58",
+      "handler": "mint/src/api/mod.rs:58",
+      "handler_nome": "(closure)",
+      "parametros_query": [],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R4",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /miner/pending_replay",
+        "http": 200,
+        "bytes": 20,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "d41089fe4dd90b8aa61021da20486ac0b18662aa2cff19a53d170ef44198b6ec",
+        "resposta": {
+          "pending_replay": 0
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/operate/contract/logs/delete",
+      "registro": "vm/src/api.rs:590",
+      "handler": "vm/src/api.rs:122",
+      "handler_nome": "vm_logs_delete",
+      "parametros_query": [
+        "height",
+        "auth"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R3",
+      "executar": false,
+      "motivo": "NÃO EXECUTAR: apaga logs de contrato no nó",
+      "exemplo": null
+    },
+    {
+      "metodo": "POST",
+      "caminho": "/operate/fee/raise",
+      "registro": "mint/src/api/mod.rs:119",
+      "handler": "mint/src/api/transaction.rs:451",
+      "handler_nome": "fee_raise_handler",
+      "parametros_query": [
+        "fee",
+        "fee_prikey",
+        "hash",
+        "hexbody"
+      ],
+      "corpo": "transação ou bloco em hex no corpo do POST",
+      "na_doc_v2": true,
+      "risco": "R3",
+      "executar": false,
+      "motivo": "NÃO EXECUTAR: recebe fee_prikey e reescreve transação na mempool",
+      "exemplo": null
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/pool_summary",
+      "registro": "api/src/pool.rs:31",
+      "handler": "api/src/pool.rs:9",
+      "handler_nome": "pool_summary_handler",
+      "parametros_query": [],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /pool_summary",
+        "http": 200,
+        "bytes": 23,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "db11f1279695f221fdafe52ed7541c77db34634a175ab3f4ed40fc77efee167f",
+        "resposta": {
+          "group0": 1,
+          "group1": 0
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/asset",
+      "registro": "mint/src/api/mod.rs:81",
+      "handler": "mint/src/api/query/asset.rs:31",
+      "handler_nome": "asset_query_handler",
+      "parametros_query": [
+        "serial"
+      ],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/asset?serial=2000",
+        "http": 200,
+        "bytes": 123,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "82663840b4be105d2381d3ecfe1f5126b18f67493cfe2c6a64b85685fce3cb77",
+        "resposta": {
+          "ret": 0,
+          "asset": {
+            "serial": "2000",
+            "decimal": 8,
+            "name": "hacds",
+            "ticket": "HACDS",
+            "supply": "5963298700000000",
+            "metadata": true
+          }
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/balance",
+      "registro": "mint/src/api/mod.rs:80",
+      "handler": "mint/src/api/query/balance.rs:129",
+      "handler_nome": "balance_handler",
+      "parametros_query": [
+        "unit",
+        "diamonds",
+        "assets",
+        "asset_meta",
+        "address",
+        "asset",
+        "coinkind"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/balance?address=1AVRuFXNFi3rdMrPH4hdqSgFrEBnWisWaS&unit=mei",
+        "http": 200,
+        "bytes": 69,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "85953b4b1473c850d7552c858dff667e2cedc4f07621051d0fc81163296b1aa4",
+        "resposta": {
+          "ret": 0,
+          "list": [
+            {
+              "hacash": "1784.46320557",
+              "diamond": 1,
+              "satoshi": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/block/datas",
+      "registro": "mint/src/api/mod.rs:111",
+      "handler": "mint/src/api/query/block.rs:23",
+      "handler_nome": "block_datas_handler",
+      "parametros_query": [
+        "hexbody",
+        "base64body",
+        "confirm",
+        "start_height",
+        "limit",
+        "max_size"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/block/datas?start_height=792700&limit=1&hexbody=true",
+        "http": 200,
+        "bytes": 1128,
+        "ms": 0,
+        "content_type": "text/plain; charset=utf-8",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "e383e98f279faad2301456fa128b6ec7db161f65a4f67523088cf2d62abcdae4",
+        "resposta": "0100000c187c006ad87db800000000007526778f036ac4d02ea2c2ea4f9ee82bcf72ce2d4eae5109845311483e8dcc5bb1f0228c82d8f008cfe34ba98cdd7c3732e27ce27b1226a7679afe00000003a71fb0b0d78b2b4f00000000616b0f722990799b2027817784cdb3c2bb7f4dc8f80108776f726c6420706f6f6c202020202020014da20100000008000000000000000000000000000000000000000000000000040002006ad87b8900ebbd323f4d3a02a3ea5a80606d833d608c25e52df502564b000100044b …(truncado)"
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/block/height/latest",
+      "registro": "api/src/chain.rs:41",
+      "handler": "api/src/chain.rs:24",
+      "handler_nome": "latest_height_handler",
+      "parametros_query": [],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/block/height/latest",
+        "http": 200,
+        "bytes": 25,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "311124783458271ad0862935ca9c00cc3b14895c88cc4a2c18836581d76d5097",
+        "resposta": {
+          "ret": 0,
+          "height": 792745
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/block/intro",
+      "registro": "mint/src/api/mod.rs:110",
+      "handler": "mint/src/api/query/block.rs:9",
+      "handler_nome": "block_intro_handler",
+      "parametros_query": [
+        "unit",
+        "hash",
+        "tx_hash_list",
+        "height"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/block/intro?height=792700",
+        "http": 200,
+        "bytes": 434,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "1e0e6c87fadcf09613c09b7c610b7e96ebbd61b637848cd94b31a15920d681c1",
+        "resposta": {
+          "ret": 0,
+          "hash": "000000000055722910338ec8ac6b5933adc8c1fba7b8094f32638a0159ba031a",
+          "version": 1,
+          "height": 792700,
+          "timestamp": 1792572856,
+          "mrklroot": "483e8dcc5bb1f0228c82d8f008cfe34ba98cdd7c3732e27ce27b1226a7679afe",
+          "prevhash": "00000000007526778f036ac4d02ea2c2ea4f9ee82bcf72ce2d4eae5109845311",
+          "nonce": 2803871920,
+          "difficulty": 3616222031,
+          "miner": "19t6oHprGbGJtduxkVgFTQPAh7ry9zwrqx",
+          "reward": "8:248",
+          "message": "world pool",
+          "transaction": 2
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/block/pools",
+      "registro": "mint/src/api/mod.rs:113",
+      "handler": "mint/src/api/query/block.rs:110",
+      "handler_nome": "block_pool_stats_handler",
+      "parametros_query": [],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/block/pools",
+        "http": 200,
+        "bytes": 1501,
+        "ms": 543,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "8ea92aac7e7fe78d8a14a12e456fc340fc48b6b6a3b5eec84307db699af3f9e1",
+        "resposta": {
+          "ret": 0,
+          "latest_height": 792745,
+          "periods": [
+            {
+              "key": "1d",
+              "blocks": 288,
+              "total": 288,
+              "list": [
+                {
+                  "name": "HACPool",
+                  "miner": "1HACPooLMf8q6EByvxrmn5tnnTS82p84ST",
+                  "count": 153
+                },
+                {
+                  "name": "world pool",
+                  "miner": "19t6oHprGbGJtduxkVgFTQPAh7ry9zwrqx",
+                  "count": 62
+                },
+                {
+                  "name": "world pool",
+                  "miner": "19QYacPWB6RvPmzZq8FYTvKQSeVkuNZNJr",
+                  "count": 49
+                },
+                {
+                  "name": "unknown",
+                  "miner": "188Mw51PPCQHQEwA2Zdmw6X2Yw9zdnJprD",
+                  "count": 24
+                }
+              ]
+            },
+            {
+              "key": "7d",
+              "blocks": 2016,
+              "total": 2016,
+              "list": [
+                {
+                  "name": "world pool",
+                  "miner": "19t6oHprGbGJtduxkVgFTQPAh7ry9zwrqx",
+                  "count": 587
+                },
+                {
+                  "name": "HACPool",
+                  "miner": "1HACPooLMf8q6EByvxrmn5tnnTS82p84ST",
+                  "count": 443
+                },
+                {
+                  "name": "kryptex_pool",
+                  "miner": "18TLyD5rxXM2LZnmWyroftMpV4nsE4jJnx",
+                  "count": 414
+                },
+                {
+                  "name": "world pool",
+                  "miner": "19QYacPWB6RvPmzZq8FYTvKQSeVkuNZNJr",
+                  "count": 376
+                },
+                {
+                  "name": "unknown",
+                  "miner": "188Mw51PPCQHQEwA2Zdmw6X2Yw9zdnJprD",
+                  "count": 115
+                },
+                {
+                  "name": "NB",
+                  "miner": "12UrP7Jj1c8BzCYkanuSj3GdUdkgo72xNB",
+                  "count": 81
+                }
+              ]
+            },
+            {
+              "key": "30d",
+              "blocks": 8640,
+              "total": 8640,
+              "list": [
+                {
+                  "name": "world pool",
+                  "miner": "19t6oHprGbGJtduxkVgFTQPAh7ry9zwrqx",
+                  "count": 3920
+                },
+                {
+                  "name": "HACPool",
+                  "miner": "1HACPooLMf8q6EByvxrmn5tnnTS82p84ST",
+                  "count": 1799
+                },
+                {
+                  "name": "world pool",
+                  "miner": "19QYacPWB6RvPmzZq8FYTvKQSeVkuNZNJr",
+                  "count": 1141
+                },
+                {
+                  "name": "unknown",
+                  "miner": "188Mw51PPCQHQEwA2Zdmw6X2Yw9zdnJprD",
+                  "count": 508
+                },
+                {
+                  "name": "kryptex_pool",
+                  "miner": "18TLyD5rxXM2LZnmWyroftMpV4nsE4jJnx",
+                  "count": 431
+                },
+                {
+                  "name": "NB",
+                  "miner": "12UrP7Jj1c8BzCYkanuSj3GdUdkgo72xNB",
+                  "count": 280
+                },
+                {
+                  "name": "just fine",
+                  "miner": "188Mw51PPCQHQEwA2Zdmw6X2Yw9zdnJprD",
+                  "count": 280
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/block/recents",
+      "registro": "mint/src/api/mod.rs:114",
+      "handler": "mint/src/api/query/block.rs:189",
+      "handler_nome": "block_recents_handler",
+      "parametros_query": [
+        "unit"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/block/recents?limit=2",
+        "http": 200,
+        "bytes": 2385,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "ab5c410ab0fcc7f976adc12ee2949df951916d33451a71ab2340dfa2dfd3345b",
+        "resposta": "{\"ret\":0,\"list\":[{\"height\":792745,\"hash\":\"00000000006a220d108ac3a3beabef6d46aadb8f66a9712138c991dd2e7fe945\",\"prev\":\"000000000009667588ad71c06b496824d835f06b8de68e2873624353152833e3\",\"txs\":1,\"miner\":\"1HACPooLMf8q6EByvxrmn5tnnTS82p84ST\",\"message\":\"HACPool\",\"reward\":\"8:248\",\"time\":1792589341,\"arrive\":1792589684},{\"height\":792744,\"hash\":\"000000000009667588ad71c06b496824d835f06b8de68e2873624353152833e3\",\"prev\":\"00000000004ea6bd84e5658fd60cc2ae2c0612682795193266a133182a894dea\",\"txs\":1,\"miner\":\"19QYacPWB6RvPmzZq8FYTvKQSeVkuNZNJr\",\"message\":\"world pool\",\"reward\":\"8:248\",\"time\":1792589071,\"arrive\":1792 …(truncado)"
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/block/views",
+      "registro": "mint/src/api/mod.rs:112",
+      "handler": "mint/src/api/query/block.rs:75",
+      "handler_nome": "block_views_handler",
+      "parametros_query": [
+        "unit",
+        "limit",
+        "page",
+        "start",
+        "desc"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/block/views?limit=2",
+        "http": 200,
+        "bytes": 409,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "54962dcc843dc1c41a77f713b587abd6e3a4b46edf141a3031d63d386c79b99f",
+        "resposta": {
+          "ret": 0,
+          "latest_height": 792745,
+          "list": [
+            {
+              "height": 1,
+              "hash": "001e231cb03f9938d54f04407797b8188f0375eb10f0bcb426dccae87dcadb56",
+              "msg": "",
+              "reward": "1:248",
+              "miner": "127717zvZWFjEghjEpyyRSnitEEbnMuuLn",
+              "time": 1549250864,
+              "txs": 0
+            },
+            {
+              "height": 2,
+              "hash": "000c0a2a3761fec7aa214975c1cce407b509a828d16dcf6d3bdb1f612a2466f5",
+              "msg": "",
+              "reward": "1:248",
+              "miner": "127717zvZWFjEghjEpyyRSnitEEbnMuuLn",
+              "time": 1549251302,
+              "txs": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/channel",
+      "registro": "mint/src/api/mod.rs:106",
+      "handler": "mint/src/api/query/channel.rs:9",
+      "handler_nome": "channel_handler",
+      "parametros_query": [
+        "unit",
+        "id"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/channel?id=00",
+        "http": 200,
+        "bytes": 43,
+        "ms": 1,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "bddc4acfd4f9449a0311a8d8bc15cac392405dd7997008cbad063fa13fced12a",
+        "resposta": {
+          "ret": 1,
+          "err": "channel id format invalid"
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/coin/transfer",
+      "registro": "mint/src/api/mod.rs:125",
+      "handler": "mint/src/api/transfer.rs:173",
+      "handler_nome": "scan_coin_transfer_handler",
+      "parametros_query": [
+        "unit",
+        "coinkind",
+        "height",
+        "txposi",
+        "from",
+        "filter_from",
+        "to",
+        "filter_to"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/coin/transfer?height=583881&txposi=0&unit=mei&coinkind=hsd",
+        "http": 200,
+        "bytes": 400,
+        "ms": 1,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "e9056b01d1fab1c8b9b982d694d5c77036d21084aafd4789d300ba8f832355b0",
+        "resposta": {
+          "ret": 0,
+          "tx_hash": "d951dff1daac2b4549c4d97365806ea6847324c987dd68ec22d46674cb37e5e0",
+          "tx_timestamp": 1726169260,
+          "block_hash": "000000000009159f6f8b62e25e12ab6a0307314bd71ec9e741ae6a23d11812ba",
+          "block_timestamp": 1726169459,
+          "main_address": "18Yt6UbnDKaXaBaMPnBdEHomRYVKwcGgyH",
+          "transfers": [
+            {
+              "kind": 1,
+              "hacash": "14.4",
+              "from": "18Yt6UbnDKaXaBaMPnBdEHomRYVKwcGgyH",
+              "to": "18Yt6UbnDKaXaBaMPnBdEHomRYVKwcGgyH"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/contract/logs",
+      "registro": "vm/src/api.rs:589",
+      "handler": "vm/src/api.rs:62",
+      "handler_nome": "vm_logs_read",
+      "parametros_query": [
+        "height",
+        "index",
+        "address"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/contract/logs",
+        "http": 200,
+        "bytes": 20,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "25c7312a4d86042eee9c77cbd24ae555f7342b692e909c1bdaf11f97f2e9c6d9",
+        "resposta": {
+          "ret": 0,
+          "end": true
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/contract/sandboxcall",
+      "registro": "vm/src/api.rs:583",
+      "handler": "vm/src/api.rs:316",
+      "handler_nome": "contract_sandbox_call",
+      "parametros_query": [
+        "contract",
+        "function",
+        "params",
+        "caller",
+        "gas_max"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/contract/sandboxcall",
+        "http": 200,
+        "bytes": 49,
+        "ms": 1,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "71bc678d3354c58b3d6677edcb3974fa76d7cb159aff1fda79d3dc5acbf6ce46",
+        "resposta": {
+          "ret": 1,
+          "err": "contract address format invalid"
+        }
+      },
+      "nota": "Na medição de 21/10 às 09:35 a mesma chamada sem parâmetros devolveu ret 0 (88 bytes, use_gas 352). Às 10:39 devolveu erro de formato de contrato. ⚪ Causa não investigada; onde buscar: vm/src/api.rs:316."
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/contract/storage_fee",
+      "registro": "api/src/contract_storage.rs:99",
+      "handler": "api/src/contract_storage.rs:14",
+      "handler_nome": "contract_storage_fee_handler",
+      "parametros_query": [
+        "charge_bytes"
+      ],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/contract/storage_fee?charge_bytes=100",
+        "http": 200,
+        "bytes": 541,
+        "ms": 1,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "825358a13a6020e1792846dcd2b27c3525db53238470280ccd2ba74bf00210ab",
+        "resposta": {
+          "ret": 0,
+          "enabled": true,
+          "rule_version": 1,
+          "activation_height": 0,
+          "head_height": 792745,
+          "pending_height": 792746,
+          "target_capacity_blocks": 1000,
+          "capacity": 1000000,
+          "rate": 1000,
+          "remaining": 1000000,
+          "p_min": 10,
+          "p_max": 10000,
+          "periods": 10,
+          "k_max": 16384,
+          "next_block_quota": 16384,
+          "next_remaining_lo": 984616,
+          "next_remaining_hi": 1000000,
+          "next_periods_lo": 10,
+          "next_periods_hi": 160,
+          "schedule": [
+            [
+              0,
+              1000
+            ]
+          ],
+          "legacy_fixed_periods": 10000,
+          "fee_purity_unit": 232,
+          "fee_purity_floor": 50000000000,
+          "fee_full_u232": "50000000000000000",
+          "fee_discount_u232": "50000000000000"
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/diamond",
+      "registro": "mint/src/api/mod.rs:82",
+      "handler": "mint/src/api/query/diamond.rs:12",
+      "handler_nome": "diamond_handler",
+      "parametros_query": [
+        "unit",
+        "name",
+        "number"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/diamond?name=ZAKXMI",
+        "http": 200,
+        "bytes": 506,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "323a27b17a495a055baf98141566e47cfadeb3ec2a6b694e15c099481ad8942e",
+        "resposta": {
+          "ret": 0,
+          "name": "ZAKXMI",
+          "belong": "1EZEiGKCPiJR6itGqVjXvRn95QLBdpxBKX",
+          "inscriptions": [],
+          "inscription_items": [],
+          "number": 20001,
+          "miner": "1KcXiRhMgGcvgxZGLBkLvogKLNKNXfKjEr",
+          "born": {
+            "height": 179610,
+            "hash": "0000000010914f286cc035ee35ae0afc6294417adb775dddf25b3bd4aa22524b"
+          },
+          "prev_hash": "000000000ae89f8a1c93fbffe9baad198fda287f13e39c37294eb7a7b617bd70",
+          "bid_fee": "1:248",
+          "average_bid_burn": 10,
+          "life_gene": "aa41cc92bbff792266fca82217ddd0aabb2477f519badf071472037b7cea21e5",
+          "visual_gene": "e5e5b7949af7423bca10"
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/diamond/bidding",
+      "registro": "mint/src/api/mod.rs:83",
+      "handler": "mint/src/api/query/diamond.rs:279",
+      "handler_nome": "diamond_bidding_handler",
+      "parametros_query": [
+        "unit",
+        "since",
+        "limit",
+        "number"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/diamond/bidding",
+        "http": 200,
+        "bytes": 35,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "e9936a8511254b7faa88868f382b8bf83f6686f8b2889991dc795c651e611c91",
+        "resposta": {
+          "ret": 0,
+          "number": 138627,
+          "list": []
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/diamond/engrave",
+      "registro": "mint/src/api/mod.rs:85",
+      "handler": "mint/src/api/query/diamond.rs:355",
+      "handler_nome": "diamond_engrave_handler",
+      "parametros_query": [
+        "tx_hash",
+        "txposi",
+        "height"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/diamond/engrave?height=519242&txposi=0",
+        "http": 200,
+        "bytes": 135,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "b11168b33786070d4616956373c3d8adb0846b44d9f04a73e859a17a62b62ac5",
+        "resposta": {
+          "ret": 0,
+          "list": [
+            {
+              "action": "inscription",
+              "diamonds": "BMABAT",
+              "inscription": "HIP-15 1st HACD",
+              "engraved_type": 0,
+              "protocol_cost": "0:0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/diamond/inscription_protocol_cost",
+      "registro": "mint/src/api/mod.rs:86",
+      "handler": "mint/src/api/query/diamond.rs:244",
+      "handler_nome": "diamond_inscription_protocol_cost_handler",
+      "parametros_query": [
+        "unit",
+        "action",
+        "name",
+        "from",
+        "to"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/diamond/inscription_protocol_cost?name=ZAKXMI",
+        "http": 200,
+        "bytes": 40,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "7b5ae4efe5245c8ddca51f2a228ee88cd81b6a7124f001ab56efc95b54d15987",
+        "resposta": {
+          "ret": 0,
+          "action": "append",
+          "cost": "0:0"
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/diamond/inscription_protocol_cost/append",
+      "registro": "mint/src/api/mod.rs:90",
+      "handler": "mint/src/api/query/diamond.rs:251",
+      "handler_nome": "diamond_inscription_protocol_cost_append_handler",
+      "parametros_query": [
+        "unit",
+        "action",
+        "name",
+        "from",
+        "to"
+      ],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/diamond/inscription_protocol_cost/append?name=ZAKXMI",
+        "http": 200,
+        "bytes": 40,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "7b5ae4efe5245c8ddca51f2a228ee88cd81b6a7124f001ab56efc95b54d15987",
+        "resposta": {
+          "ret": 0,
+          "action": "append",
+          "cost": "0:0"
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/diamond/inscription_protocol_cost/drop",
+      "registro": "mint/src/api/mod.rs:102",
+      "handler": "mint/src/api/query/diamond.rs:272",
+      "handler_nome": "diamond_inscription_protocol_cost_drop_handler",
+      "parametros_query": [
+        "unit",
+        "action",
+        "name",
+        "from",
+        "to"
+      ],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/diamond/inscription_protocol_cost/drop?name=ZAKXMI",
+        "http": 200,
+        "bytes": 40,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "06e84cf37031f939c4ae0a418d20c1c2eae0c19d327d31e6b0e8762d2f2ca120",
+        "resposta": {
+          "ret": 0,
+          "action": "drop",
+          "cost": "2:247"
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/diamond/inscription_protocol_cost/edit",
+      "registro": "mint/src/api/mod.rs:98",
+      "handler": "mint/src/api/query/diamond.rs:265",
+      "handler_nome": "diamond_inscription_protocol_cost_edit_handler",
+      "parametros_query": [
+        "unit",
+        "action",
+        "name",
+        "from",
+        "to"
+      ],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/diamond/inscription_protocol_cost/edit?name=ZAKXMI",
+        "http": 200,
+        "bytes": 40,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "fa72f89ae305d378344018c0d98f86e904bca2b6b7d15e20dd788f3b8ad6ee27",
+        "resposta": {
+          "ret": 0,
+          "action": "edit",
+          "cost": "1:247"
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/diamond/inscription_protocol_cost/move",
+      "registro": "mint/src/api/mod.rs:94",
+      "handler": "mint/src/api/query/diamond.rs:258",
+      "handler_nome": "diamond_inscription_protocol_cost_move_handler",
+      "parametros_query": [
+        "unit",
+        "action",
+        "name",
+        "from",
+        "to"
+      ],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/diamond/inscription_protocol_cost/move?name=ZAKXMI",
+        "http": 200,
+        "bytes": 44,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "bf1b631d5fc0d7aadff69ac6c339feee1a942d24346bc4d2ba61646d9a48f433",
+        "resposta": {
+          "ret": 1,
+          "err": "query 'to' cannot be empty"
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/diamond/views",
+      "registro": "mint/src/api/mod.rs:84",
+      "handler": "mint/src/api/query/diamond.rs:73",
+      "handler_nome": "diamond_views_handler",
+      "parametros_query": [
+        "unit",
+        "limit",
+        "page",
+        "start",
+        "desc",
+        "name"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/diamond/views?limit=2",
+        "http": 200,
+        "bytes": 293,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "5cfd2069070c779cd33bd9130a466276a6c555638d9e2cb7eacb1fc061e72eb1",
+        "resposta": {
+          "ret": 0,
+          "latest_number": 138626,
+          "list": [
+            {
+              "name": "NHMYYM",
+              "number": 1,
+              "bid_fee": "2:244",
+              "life_gene": "4a33dd1cbb53c422ddd30422eedc5504db559b88b5b6ef0a3fa0ce56647f68ea"
+            },
+            {
+              "name": "HNUMMY",
+              "number": 2,
+              "bid_fee": "4:244",
+              "life_gene": "b933dda64a0034bbaab299c8eef5770c186621442a0c73b887e154d25db9635a"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/diamondminer/init",
+      "registro": "mint/src/api/mod.rs:70",
+      "handler": "mint/src/api/miner.rs:93",
+      "handler_nome": "diamondminer_init_handler",
+      "parametros_query": [],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R4",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/diamondminer/init",
+        "http": 200,
+        "bytes": 43,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "fc95253152877d99c9498fbb0c38c9190697cb0744e53925ee6ec4ec69cc8fc7",
+        "resposta": {
+          "ret": 1,
+          "err": "diamond miner not enabled"
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/fee/average",
+      "registro": "mint/src/api/mod.rs:107",
+      "handler": "mint/src/api/query/channel.rs:49",
+      "handler_nome": "fee_average_handler",
+      "parametros_query": [
+        "unit",
+        "extra9",
+        "burn90",
+        "consumption",
+        "tx_type"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/fee/average?consumption=120",
+        "http": 200,
+        "bytes": 72,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "d3018c775488781d1de1fdb39da95a98a759f53871b6f623b13b13e8a2f310f7",
+        "resposta": {
+          "ret": 0,
+          "purity": "6024000000",
+          "purity_unit": 232,
+          "feasible": "72288:239"
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/hashrate",
+      "registro": "mint/src/api/mod.rs:108",
+      "handler": "mint/src/api/query/hashrate.rs:7",
+      "handler_nome": "hashrate_handler",
+      "parametros_query": [],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/hashrate",
+        "http": 200,
+        "bytes": 237,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "6eaef4ec14389ccf62dfc7e658bbacbaee1fad8d890e35e2ca7aba40309899d3",
+        "resposta": {
+          "ret": 0,
+          "target": {
+            "rate": 5565781627.738558,
+            "show": "5.57GH/s",
+            "unit": "H/s",
+            "hash": "0000000000a8931effffffffffffffffffffffffffffffffffffffffffffffff",
+            "difn": 3618149151
+          },
+          "realtime": {
+            "rate": 5044515070.457908,
+            "show": "5.04GH/s",
+            "unit": "H/s"
+          }
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/hashrate/logs",
+      "registro": "mint/src/api/mod.rs:109",
+      "handler": "mint/src/api/query/hashrate.rs:26",
+      "handler_nome": "hashrate_logs_handler",
+      "parametros_query": [
+        "target",
+        "scale",
+        "days"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/hashrate/logs",
+        "http": 200,
+        "bytes": 4471,
+        "ms": 52,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "53ee5a47f4a83d18b8af01d57b0c57ffa9f17dbac95dbe36c23bfbc077d278e5",
+        "resposta": "{\"ret\":0,\"day200\":[19489014627,74116421937,18846375819,64783245373,21509192836,54853871738,22584475120,65691445076,21531560522,65174007926,4,14136302,1279687,302709159,25406263382,34197575304,37976802060,43650997596,40043470732,33268635739,36859314955,31734732821,29272297633,28104188463,29496095892,28729302654,27751645240,29083309376,28277922122,28863946622,30542902488,25767505656,26601062310,28200031719,33950638329,40319274801,28348766080,25442068028,25151468491,27248680188,26073463569,19455624735,23904012884,26238058925,22833821637,25156284167,24132320622,22686191517,21277259500,21884269937, …(truncado)"
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/latest",
+      "registro": "mint/src/api/mod.rs:78",
+      "handler": "mint/src/api/query/supply.rs:40",
+      "handler_nome": "latest_handler",
+      "parametros_query": [],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/latest",
+        "http": 200,
+        "bytes": 42,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "f5c9b307e1a29e47f7a665a6911980b3b125c560d5f339ea5d46ce84d7166fdb",
+        "resposta": {
+          "ret": 0,
+          "height": 792745,
+          "diamond": 138626
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/miner/notice",
+      "registro": "app/src/fullnode/miner_notice.rs:21",
+      "handler": "app/src/fullnode/miner_notice.rs:28",
+      "handler_nome": "miner_notice_long_poll",
+      "parametros_query": [
+        "height",
+        "wait"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R1",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/miner/notice?height=0&wait=1",
+        "http": 200,
+        "bytes": 25,
+        "ms": 1001,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "311124783458271ad0862935ca9c00cc3b14895c88cc4a2c18836581d76d5097",
+        "resposta": {
+          "ret": 0,
+          "height": 792745
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/miner/pending",
+      "registro": "mint/src/api/mod.rs:64",
+      "handler": "mint/src/api/miner.rs:10",
+      "handler_nome": "miner_pending_handler",
+      "parametros_query": [
+        "detail",
+        "transaction",
+        "stuff",
+        "base64"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R4",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/miner/pending",
+        "http": 200,
+        "bytes": 35,
+        "ms": 1,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "03a8672537ba1f52c51b2835a47d9ea519a254a7ce0d0dab0844d6f0e4ebf585",
+        "resposta": {
+          "ret": 1,
+          "err": "miner not enabled"
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/supply",
+      "registro": "mint/src/api/mod.rs:79",
+      "handler": "mint/src/api/query/supply.rs:7",
+      "handler_nome": "supply_handler",
+      "parametros_query": [],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/supply",
+        "http": 200,
+        "bytes": 1131,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "e9c37aa4dd9a6dc313fe22a082bfeee367f2382ce9ffd2708d4b60c30f578152",
+        "resposta": {
+          "ret": 0,
+          "latest_height": 792745,
+          "current_circulation": 1909434.2904756851,
+          "block_reward": 3541967,
+          "burned_fee": 1634606.1575186448,
+          "minted_diamond": 138626,
+          "burned_diamond_bid": 1634329.22313024,
+          "channel_opening": 26,
+          "channel_deposit": 97834.0024,
+          "channel_interest": 2073.4479943298,
+          "channel_open_total": 125,
+          "channel_close_total": 99,
+          "channel_closed_hac_volume": 374416.439,
+          "created_asset": 8,
+          "burned_asset_issue": 64,
+          "burned_legacy_tx_extra9_fee": 1634337.843290127,
+          "burned_ast_vm_gas": 165.9604713551,
+          "tx_fee_pay_total": 1874928.4773379653,
+          "tx_fee_got_total": 240590.6340478374,
+          "diamond_engraved": 993,
+          "burned_diamond_insc": 27.12,
+          "diamond_inscription_created": 9286,
+          "diamond_inscription_destroyed": 3,
+          "diamond_inscription_live": 9283,
+          "diamond_inscription_clean": 2,
+          "diamond_inscription_edit": 0,
+          "diamond_inscription_move": 0,
+          "diamond_inscription_live_diamond": 8353,
+          "burned_contract_protocol_cost": 11.2337571626,
+          "contract_deploy_count": 11,
+          "contract_update_count": 0,
+          "contract_charge_bytes_total": 30085,
+          "burned_blackhole_hac": 0,
+          "blackhole_sat_burn": 0,
+          "blackhole_asset_burn_count": 0,
+          "blackhole_hacd_burn_count": 0,
+          "transferred_bitcoin": 0,
+          "trsbtc_subsidy": 0
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/query/transaction",
+      "registro": "mint/src/api/mod.rs:115",
+      "handler": "mint/src/api/query/tx.rs:50",
+      "handler_nome": "transaction_query_handler",
+      "parametros_query": [
+        "unit",
+        "hash",
+        "body",
+        "action",
+        "signature",
+        "description"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /query/transaction?hash=b563b525d5a840f14c2f1d7da52a1eb3f7ee7357e784af8b68d0b0f74b95cbb4&action=true&unit=mei",
+        "http": 200,
+        "bytes": 448,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "feb424503f5411791115f0c68bbd87f5e7eb042e265392acf804eb38ef93053f",
+        "resposta": {
+          "ret": 0,
+          "hash": "b563b525d5a840f14c2f1d7da52a1eb3f7ee7357e784af8b68d0b0f74b95cbb4",
+          "hash_with_fee": "ee5c254b1f1628eacff17ea39836a17569d5d5bbd8d9e97b8a0383dac95740ac",
+          "type": 2,
+          "timestamp": 1726169260,
+          "fee": "0.0001",
+          "fee_got": "0.0001",
+          "main_address": "12pbJdDmvZcRs3BhJnJ1RKuiHE48mVJS71",
+          "action": 1,
+          "block": {
+            "height": 583881,
+            "timestamp": 1726169459
+          },
+          "confirm": 208864,
+          "actions": [
+            {
+              "kind": 1,
+              "to": "1NzdWYfp42gpRDf9Hsv5CA6D5gQvMt3599",
+              "hacash": "15.9975414"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "metodo": "POST",
+      "caminho": "/query/transaction/simulate",
+      "registro": "vm/src/api.rs:586",
+      "handler": "vm/src/api.rs:188",
+      "handler_nome": "transaction_simulate",
+      "parametros_query": [
+        "gas_max"
+      ],
+      "corpo": "transação ou bloco em hex no corpo do POST",
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "POST /query/transaction/simulate",
+        "http": 200,
+        "bytes": 117,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "c22ef2a8938f1427ecd98101e2dfdaee065c37db93e8cf4884e74df6d5632d7a",
+        "resposta": {
+          "ret": 1,
+          "success": false,
+          "err": "simulation transaction body is empty",
+          "error": "simulation transaction body is empty"
+        }
+      }
+    },
+    {
+      "metodo": "POST",
+      "caminho": "/query/vm/estimate_gas",
+      "registro": "vm/src/api.rs:587",
+      "handler": "vm/src/api.rs:188",
+      "handler_nome": "transaction_simulate",
+      "parametros_query": [
+        "gas_max"
+      ],
+      "corpo": "transação ou bloco em hex no corpo do POST",
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "POST /query/vm/estimate_gas",
+        "http": 200,
+        "bytes": 117,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "c22ef2a8938f1427ecd98101e2dfdaee065c37db93e8cf4884e74df6d5632d7a",
+        "resposta": {
+          "ret": 1,
+          "success": false,
+          "err": "simulation transaction body is empty",
+          "error": "simulation transaction body is empty"
+        }
+      }
+    },
+    {
+      "metodo": "POST",
+      "caminho": "/query/vm/simulate",
+      "registro": "vm/src/api.rs:588",
+      "handler": "vm/src/api.rs:188",
+      "handler_nome": "transaction_simulate",
+      "parametros_query": [
+        "gas_max"
+      ],
+      "corpo": "transação ou bloco em hex no corpo do POST",
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "POST /query/vm/simulate",
+        "http": 200,
+        "bytes": 117,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "c22ef2a8938f1427ecd98101e2dfdaee065c37db93e8cf4884e74df6d5632d7a",
+        "resposta": {
+          "ret": 1,
+          "success": false,
+          "err": "simulation transaction body is empty",
+          "error": "simulation transaction body is empty"
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/status",
+      "registro": "api/src/status.rs:80",
+      "handler": "api/src/status.rs:9",
+      "handler_nome": "status_handler",
+      "parametros_query": [],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /status",
+        "http": 200,
+        "bytes": 247,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "56427978a00b9e6257f320de39f69abbdb575553d08d9da8c32be8cd6e42fe27",
+        "resposta": {
+          "height": 792745,
+          "chain_id": 0,
+          "block_target_seconds": 300,
+          "uptime": 4600,
+          "peers": 2,
+          "vm_fee_purity_unit": 232,
+          "vm_fee_purity_floor": 50000000000,
+          "vm_contract_store_perm_periods": 10000,
+          "vm_contract_storage_enabled": true,
+          "vm_contract_storage_periods": 10
+        }
+      }
+    },
+    {
+      "metodo": "POST",
+      "caminho": "/submit/block",
+      "registro": "mint/src/api/mod.rs:118",
+      "handler": "mint/src/api/query/tx.rs:167",
+      "handler_nome": "submit_block_handler",
+      "parametros_query": [
+        "hexbody"
+      ],
+      "corpo": "transação ou bloco em hex no corpo do POST",
+      "na_doc_v2": true,
+      "risco": "R3",
+      "executar": false,
+      "motivo": "NÃO EXECUTAR: injeta bloco",
+      "exemplo": null
+    },
+    {
+      "metodo": "POST",
+      "caminho": "/submit/diamondminer/success",
+      "registro": "mint/src/api/mod.rs:73",
+      "handler": "mint/src/api/miner.rs:113",
+      "handler_nome": "diamondminer_success_handler",
+      "parametros_query": [
+        "hexbody"
+      ],
+      "corpo": "transação ou bloco em hex no corpo do POST",
+      "na_doc_v2": true,
+      "risco": "R4",
+      "executar": false,
+      "motivo": "NÃO EXECUTAR: submete resultado de mineração de diamante",
+      "exemplo": null
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/submit/miner/success",
+      "registro": "mint/src/api/mod.rs:67",
+      "handler": "mint/src/api/miner.rs:57",
+      "handler_nome": "miner_success_handler",
+      "parametros_query": [
+        "block_nonce",
+        "coinbase_nonce",
+        "height"
+      ],
+      "corpo": null,
+      "na_doc_v2": true,
+      "risco": "R4",
+      "executar": false,
+      "motivo": "NÃO EXECUTAR: submete bloco minerado",
+      "exemplo": null
+    },
+    {
+      "metodo": "POST",
+      "caminho": "/submit/transaction",
+      "registro": "mint/src/api/mod.rs:117",
+      "handler": "mint/src/api/query/tx.rs:129",
+      "handler_nome": "submit_transaction_handler",
+      "parametros_query": [
+        "only_insert_txpool",
+        "hexbody"
+      ],
+      "corpo": "transação ou bloco em hex no corpo do POST",
+      "na_doc_v2": true,
+      "risco": "R3",
+      "executar": false,
+      "motivo": "NÃO EXECUTAR: injeta transação na mempool e retransmite à rede",
+      "exemplo": null
+    },
+    {
+      "metodo": "POST",
+      "caminho": "/util/transaction/check",
+      "registro": "mint/src/api/mod.rs:120",
+      "handler": "mint/src/api/transaction.rs:312",
+      "handler_nome": "transaction_check_handler",
+      "parametros_query": [
+        "unit",
+        "set_fee",
+        "sign_address",
+        "body",
+        "signature",
+        "description",
+        "hexbody"
+      ],
+      "corpo": "transação ou bloco em hex no corpo do POST",
+      "na_doc_v2": true,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "POST /util/transaction/check",
+        "http": 200,
+        "bytes": 42,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "44439f60046f7f59177c61b6ad191cd41dc40b244a76d717b1247f7db16b164c",
+        "resposta": {
+          "ret": 1,
+          "err": "transaction body invalid"
+        }
+      }
+    },
+    {
+      "metodo": "POST",
+      "caminho": "/util/transaction/sign",
+      "registro": "mint/src/api/mod.rs:121",
+      "handler": "mint/src/api/transaction.rs:367",
+      "handler_nome": "transaction_sign_handler",
+      "parametros_query": [
+        "unit",
+        "prikey",
+        "pubkey",
+        "sigdts",
+        "signature",
+        "description",
+        "hexbody"
+      ],
+      "corpo": "transação ou bloco em hex no corpo do POST",
+      "na_doc_v2": true,
+      "risco": "R2",
+      "executar": false,
+      "motivo": "NÃO EXECUTAR: recebe prikey e assina",
+      "exemplo": null
+    },
+    {
+      "metodo": "GET",
+      "caminho": "/vm/status",
+      "registro": "vm/src/api.rs:582",
+      "handler": "vm/src/api.rs:55",
+      "handler_nome": "vm_status_handler",
+      "parametros_query": [],
+      "corpo": null,
+      "na_doc_v2": false,
+      "risco": "R0",
+      "executar": true,
+      "exemplo": {
+        "chamada": "GET /vm/status",
+        "http": 200,
+        "bytes": 40,
+        "ms": 0,
+        "content_type": "application/json",
+        "medido_em": "2026-10-21T10:39:42-03:00",
+        "sha256": "2307583cdfc404ccb3d50509d2abedf061574cc6194da9a7462858468f34f02c",
+        "resposta": {
+          "ret": 0,
+          "vm": "enabled",
+          "height": 792745
+        }
+      }
+    }
+  ]
+}

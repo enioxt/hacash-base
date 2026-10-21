@@ -1,0 +1,55 @@
+{
+  "name": "@egosbr/mcp-hacash",
+  "version": "0.2.0",
+  "description": "Hacash read-only MCP server (block height, supply, balance, diamond, transaction, block, asset, channel) over a fullnode HTTP RPC. Somente leitura.",
+  "homepage": "https://github.com/enioxt/hacash-base/tree/main/mcp",
+  "bugs": {
+    "url": "https://github.com/enioxt/hacash-base/issues"
+  },
+  "type": "module",
+  "bin": {
+    "mcp-hacash": "dist/cli.mjs"
+  },
+  "files": [
+    "dist/cli.mjs",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18.15"
+  },
+  "scripts": {
+    "start": "bun src/cli.ts",
+    "build": "bun build src/cli.ts --target=node --format=esm --outfile=dist/cli.mjs && chmod +x dist/cli.mjs",
+    "test": "bun test test/",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.31.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.3",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.4.0"
+  },
+  "keywords": [
+    "mcp",
+    "hacash",
+    "hac",
+    "hacd",
+    "blockchain",
+    "read-only",
+    "claude",
+    "codex"
+  ],
+  "author": "Enio Rocha (https://github.com/enioxt)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enioxt/hacash-base.git",
+    "directory": "mcp"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
